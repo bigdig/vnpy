@@ -31,19 +31,31 @@ except ImportError:
     pass
 
 from vnpy.trader.vtGlobal import globalSetting
-from vnpy.trader.vtObject import VtTickData, VtBarData
-from vnpy.trader.vtConstant import *
-from vnpy.trader.vtGateway import VtOrderData, VtTradeData
 
-from .ctaBase import *
 from vnpy.trader.vtFunction import loadMongoSetting
 from vnpy.trader.vtFunction import isRecordingTime, isTradingTime, timeit
 import logging
 
+MINUTE_DB_NAME = 'VnTrader_1Min_Db'
 #----------------------------------------------------------------------
-from .caching import Cache
+# from .caching import Cache
 from pymongo import ASCENDING
 
+from vnpy.trader.constant import (Direction, Offset, Exchange,
+                                  Interval, Status)
+from vnpy.trader.database import database_manager
+from vnpy.trader.object import OrderData, TradeData, BarData, TickData
+from vnpy.trader.utility import round_to
+
+from .base import (
+    BacktestingMode,
+    EngineType,
+    STOPORDER_PREFIX,
+    StopOrder,
+    StopOrderStatus,
+    INTERVAL_DELTA_MAP
+)
+from .template import CtaTemplate
 
 ########################################################################
 class BacktestingEngine(object):
@@ -66,7 +78,7 @@ class BacktestingEngine(object):
         self.stopOrderDict = {}  # 停止单撤销后不会从本字典中删除
         self.workingStopOrderDict = {}  # 停止单撤销后会从本字典中删除
 
-        self.engineType = ENGINETYPE_BACKTESTING  # 引擎类型为回测
+        self.engineType = EngineType.BACKTESTING  # 引擎类型为回测
 
         self.strategy = None  # 回测策略
         self.mode = self.BAR_MODE  # 回测模式，默认为K线
@@ -202,12 +214,16 @@ class BacktestingEngine(object):
         """设置价格最小变动"""
         self.priceTick = priceTick
 
+    def get_engine_type(self):
+        """"""
+        return self.engineType
+
     #------------------------------------------------
     # 数据回放相关
     #------------------------------------------------
 
     #----------------------------------------------------------------------
-    @Cache(ttl=60 * 60 * 24, maxsize=1024*1024, filepath='./temp/cache')
+    # @Cache(ttl=60 * 60 * 24, maxsize=1024*1024, filepath='./temp/cache')
     def dbQuery(self, dbName, collectionName, d):
         """从MongoDB中读取数据，d是查询要求，返回的是数据库查询的指针"""
 
@@ -300,10 +316,10 @@ class BacktestingEngine(object):
 
         # 首先根据回测模式，确认要使用的数据类
         if self.mode == self.BAR_MODE:
-            dataClass = CtaBarData
+            dataClass = BarData
             func = self.newBar
         else:
-            dataClass = CtaTickData
+            dataClass = TickData
             func = self.newTick
 
         # 如果有回测结果，则不再回测
@@ -350,10 +366,10 @@ class BacktestingEngine(object):
                     if spreadAdjust > 0:
                         spreadAdjust = 0
 
-                    data.open -= spreadAdjust
-                    data.close -= spreadAdjust
-                    data.high -= spreadAdjust
-                    data.low -= spreadAdjust
+                    data.open_price -= spreadAdjust
+                    data.close_price -= spreadAdjust
+                    data.high_price -= spreadAdjust
+                    data.low_price -= spreadAdjust
 
                 #  如果换月，所有策略平仓
                 if lastData and (data.openInterest - lastData.openInterest)/lastData.openInterest > 0.005:
@@ -399,7 +415,7 @@ class BacktestingEngine(object):
 
         self.crossLimitOrder()  # 先撮合限价单
         self.crossStopOrder()  # 再撮合停止单
-        self.strategy.onBar(bar)  # 推送K线到策略中
+        self.strategy.on_bar(bar)  # 推送K线到策略中
 
         self.updateDailyClose(bar.datetime, bar.close)
 
@@ -411,7 +427,7 @@ class BacktestingEngine(object):
 
         self.crossLimitOrder()
         self.crossStopOrder()
-        self.strategy.onTick(tick)
+        self.strategy.on_tick(tick)
 
         self.updateDailyClose(tick.datetime, tick.lastPrice)
 
@@ -445,19 +461,19 @@ class BacktestingEngine(object):
         for orderID, order in list(self.workingLimitOrderDict.items()):
             # 推送委托进入队列（未成交）的状态更新
             if not order.status:
-                order.status = STATUS_NOTTRADED
+                order.status = Status.NOTTRADED
                 strategy = self.orderStrategyDict[order.orderID]
                 strategy.onOrder(order)
 
             # 判断是否会成交
             buyCross = (
-                order.direction == DIRECTION_LONG
+                order.direction == Direction.LONG
                 and order.price >= buyCrossPrice
                 and vtSymbol.lower() == order.vtSymbol.lower()
                 and buyCrossPrice > 0)  # 国内的tick行情在涨停时askPrice1为0，此时买无法成交
 
             sellCross = (
-                order.direction == DIRECTION_SHORT
+                order.direction == Direction.SHORT
                 and order.price <= sellCrossPrice
                 and vtSymbol.lower() == order.vtSymbol.lower()
                 and sellCrossPrice > 0)  # 国内的tick行情在跌停时bidPrice1为0，此时卖无法成交
@@ -467,7 +483,7 @@ class BacktestingEngine(object):
                 # 推送成交数据
                 self.tradeCount += 1  # 成交编号自增1
                 tradeID = str(self.tradeCount)
-                trade = VtTradeData()
+                trade = TradeData()
                 trade.vtSymbol = order.vtSymbol
                 trade.tradeID = tradeID
                 trade.vtTradeID = tradeID
@@ -544,7 +560,7 @@ class BacktestingEngine(object):
                 # 推送成交数据
                 self.tradeCount += 1  # 成交编号自增1
                 tradeID = str(self.tradeCount)
-                trade = VtTradeData()
+                trade = TradeData()
                 trade.vtSymbol = so.vtSymbol
                 trade.tradeID = tradeID
                 trade.vtTradeID = tradeID
@@ -571,7 +587,7 @@ class BacktestingEngine(object):
                 self.tradeDict[tradeID] = trade
 
                 # 推送委托数据
-                order = VtOrderData()
+                order = OrderData()
                 order.vtSymbol = so.vtSymbol
                 order.symbol = so.vtSymbol
                 order.orderID = orderID
@@ -605,7 +621,7 @@ class BacktestingEngine(object):
         self.limitOrderCount += 1
         orderID = str(self.limitOrderCount)
 
-        order = VtOrderData()
+        order = OrderData()
         order.vtSymbol = vtSymbol
         order.price = self.roundToPriceTick(price)
         order.totalVolume = volume
@@ -636,7 +652,7 @@ class BacktestingEngine(object):
         self.limitOrderCount += 1
         orderID = str(self.limitOrderCount)
 
-        order = VtOrderData()
+        order = OrderData()
         order.vtSymbol = vtSymbol
         order.price = self.roundToPriceTick(price)
         order.totalVolume = volume
@@ -777,7 +793,7 @@ class BacktestingEngine(object):
         initData = []
         for d in initCursor:
             #data = dataClass()
-            data = VtBarData()
+            data = BarData()
             if 'exchange' not in d:
                 d['exchange'] = "SHFE"
             data.__dict__ = d
@@ -1053,7 +1069,7 @@ class BacktestingEngine(object):
                 longTradeList.append(result.pnl)  # 加入空头交易
 
                 #添加结束交易，确保按日统计的准确性
-                t = VtTradeData()
+                t = TradeData()
                 t.offset = DIRECTION_SHORT
                 t.volume = trade.volume
                 t.price = endPrice
@@ -1074,7 +1090,7 @@ class BacktestingEngine(object):
                 
 
                 #添加结束交易，确保按日统计的准确性
-                t = VtTradeData()
+                t = TradeData()
                 t.offset = DIRECTION_LONG
                 t.volume = trade.volume
                 t.price = endPrice
