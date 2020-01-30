@@ -1,0 +1,13 @@
+[
+    {
+        "name": "TurtleTradingStrategy_${vtSymbol}_${kLineCycle}_${isVirtual}",
+        "className": "TurtleTradingStrategy",
+        "vtSymbol": "${vtSymbol}",
+        "kLineCycle": "${kLineCycle}",
+        "initDays": 40,
+        "fixedSize": 1,
+        "posMultiper": "${posMultiper}",
+        "isVirtual" : "${isVirtual}",
+        "enable": true
+    }
+]

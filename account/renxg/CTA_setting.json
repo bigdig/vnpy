@@ -1,0 +1,26 @@
+[
+    {
+        "name": "group_rb",
+        "className": "MultiStrategy",
+        "vtSymbol": "rb2005",
+        "kLineCycle":60,
+        "initDays": 40,
+        "settingFile":
+            [
+                "CTA_setting_pos_rb.json"
+            ],
+        "enable":true
+    },
+    {
+        "name": "group_ap",
+        "className": "MultiStrategy",
+        "vtSymbol": "AP910",
+        "kLineCycle":60,
+        "initDays": 40,
+        "settingFile":
+            [
+                "CTA_setting_pos_ap.json"
+            ],
+        "enable":false
+    }
+]

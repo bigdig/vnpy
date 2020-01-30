@@ -1,0 +1,23 @@
+{
+	"fontFamily": "微软雅黑",
+	"fontSize": 12,
+
+	"mongoHost1":"106.14.203.4",
+	"mongoHost":"127.0.0.1",
+	"mongoPort": 27017,
+	"mongoLogging": true,
+
+	"darkStyle": true,
+	"language": "chinese",
+
+	"logActive": true,
+	"logLevel": "debug",
+	"logConsole": true,
+	"logFile": true,
+
+	"tdPenalty": ["rb","IF", "IH", "IC","AP"],
+	"tdPositionUpper" : 0,
+
+	"EVENT_BLOCK":true,
+	"EVENT_TIMEOUT":0.0001
+}

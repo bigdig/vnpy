@@ -1,0 +1,17 @@
+[
+    {
+        "name": "OPT_TurtleTradingStrategy_${vtSymbol}",
+        "className": "MultiStrategy",
+        "vtSymbol": "${vtSymbol}",
+        "posMultiper": "${posMultiper}",
+        "kLineCycle": 60,
+        "exitOnTopRtnPips": 0.008,
+        "halfTime": 60,
+        "initDays": 40,
+        "settingFile": [
+            "CTA_setting_Turtle_OPT.json"
+        ],
+        "isVirtual" : "${isVirtual}",
+        "enable": true
+    }
+]
