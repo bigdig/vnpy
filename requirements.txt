@@ -20,4 +20,4 @@ ibapi
 deap
 pyzmq
 wmi
-QScintilla
+QScintilla==2.11.3

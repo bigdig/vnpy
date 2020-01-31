@@ -66,6 +66,7 @@ def get_file_path(filename: str):
     """
     Get path for temp file with filename.
     """
+    print(TEMP_DIR.joinpath(filename))
     return TEMP_DIR.joinpath(filename)
 
 

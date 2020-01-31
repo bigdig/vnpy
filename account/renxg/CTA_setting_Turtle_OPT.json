@@ -1,8 +1,8 @@
 [
     {
-        "name": "TurtleTradingStrategy_${vtSymbol}_${kLineCycle}_${isVirtual}",
+        "strategy_name": "TurtleTradingStrategy_${vt_symbol}_${kLineCycle}_${isVirtual}",
         "className": "TurtleTradingStrategy",
-        "vtSymbol": "${vtSymbol}",
+        "vt_symbol": "${vt_symbol}",
         "kLineCycle": "${kLineCycle}",
         "initDays": 40,
         "fixedSize": 1,

@@ -40,7 +40,28 @@ class CtaTemplate(ABC):
         self.variables.insert(1, "trading")
         self.variables.insert(2, "pos")
 
-        self.update_setting(setting)
+        self.ctaEngine = cta_engine
+
+        # 设置策略的参数
+        if setting:
+            d = self.__dict__
+            for key in self.parameters:
+                if key in setting:
+                    #d[key] = setting[key]
+                    tp = type(getattr(self, key))
+                    print(key)
+                    
+                    #buf-fix settingFile may be string or list
+                    if key != 'settingFile' and tp:
+
+                        if tp in [int,float,bool]:
+                            setattr(self, key, eval(str(setting[key])) )
+                        else:
+                            setattr(self, key, tp(setting[key]) )
+                    else:
+                        setattr(self, key, setting[key])
+
+        # self.update_setting(setting)
 
     def update_setting(self, setting: dict):
         """
@@ -211,6 +232,14 @@ class CtaTemplate(ABC):
         Write a log message.
         """
         self.cta_engine.write_log(msg, self)
+
+    #----------------------------------------------------------------------
+    def writeCtaLog(self, content):
+        """记录CTA日志"""
+        self.write_log(content)
+
+    def putEvent(self):
+        self.put_event()
 
     def get_engine_type(self):
         """

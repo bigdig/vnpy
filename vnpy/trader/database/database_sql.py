@@ -37,6 +37,7 @@ def init(driver: Driver, settings: dict):
 def init_sqlite(settings: dict):
     database = settings["database"]
     path = str(get_file_path(database))
+    print(path)
     db = SqliteDatabase(path)
     return db
 

@@ -1,8 +1,8 @@
 [
     {
-        "name": "OPT_TurtleTradingStrategy_${vtSymbol}",
+        "strategy_name": "OPT_TurtleTradingStrategy_${vt_symbol}",
         "className": "MultiStrategy",
-        "vtSymbol": "${vtSymbol}",
+        "vt_symbol": "${vt_symbol}",
         "posMultiper": "${posMultiper}",
         "kLineCycle": 60,
         "exitOnTopRtnPips": 0.008,
