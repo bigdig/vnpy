@@ -56,10 +56,10 @@ class CtaTemplate_1(CtaTemplate_0):
     #----------------------------------------------------------------------
     def on_order(self, order:OrderData):
         """报单更新"""
-        # super(CtaTemplate_1, self).onOrder(order)
+        # super(CtaTemplate_1, self).on_order(order)
 
         self.write_log(
-            u'OnOrder()报单更新，orderID:{0},{1},totalVol:{2},tradedVol:{3},offset:{4},price:{5},direction:{6},status:{7}'
+            u'on_order()报单更新，orderID:{0},{1},totalVol:{2},tradedVol:{3},offset:{4},price:{5},direction:{6},status:{7}'
             .format(order.orderid, order.vt_symbol, order.volume,
                     order.traded, order.offset, order.price,
                     order.direction, order.status))
@@ -74,14 +74,14 @@ class CtaTemplate_1(CtaTemplate_0):
         if order.status in STATUS_FINISHED:
             if orderInfo['MarketOrderFlag']:
                 # 补单
-                self.reissue_order( (order.totalVolume - order.tradedVolume) * (1 if order.direction == Direction.LONG else -1) ,self.tickAdd )
+                self.reissue_order( (order.volume - order.traded) * (1 if order.direction == Direction.LONG else -1) ,self.tickAdd )
 
             del self.uncompletedOrders[orderkey]
 
             if len(self.uncompletedOrders) == 0:
                 self.entrust = 0
 
-            self.putEvent()  # 更新监控事件
+            self.put_event()  # 更新监控事件
 
     #----------------------------------------------------------------------
     def on_tick(self, tick):
@@ -187,9 +187,9 @@ class CtaTemplate_1(CtaTemplate_0):
                     shortPrice = max(shortPrice, self.lastTick.lowerLimit)       # 跌停价检查
         else:
             if posChange > 0:
-                longPrice = self.lastBar.close + tickAdd
+                longPrice = self.lastBar.close_price + tickAdd
             else:
-                shortPrice = self.lastBar.close - tickAdd
+                shortPrice = self.lastBar.close_price - tickAdd
         
         # 回测模式下，采用合并平仓和反向开仓委托的方式
         if self.get_engine_type() == EngineType.BACKTESTING:

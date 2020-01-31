@@ -1,0 +1,13 @@
+[
+    {
+        "strategy_name": "TripleMAStrategy_${vt_symbol}_${kLineCycle}",
+        "className": "TripleMAStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "kLineCycle": "${kLineCycle}",
+        "initDays": 40,
+        "fixedSize": 1,
+        "posMultiper": "${posMultiper}",
+        "KLineSeconds": 60,
+        "enable": true
+    }
+]

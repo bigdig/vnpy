@@ -1,0 +1,17 @@
+[
+    {
+        "strategy_name": "group_real_${vt_symbol}",
+        "className": "MultiStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "posMultiper": "${posMultiper}",
+        "exitOnTopRtnPips": 0.008,
+        "kLineCycle": 60,
+        "initDays": 40,
+        "settingFile": [
+            "CTA_setting_Turtle.json",
+            "CTA_setting_TripleMa.json"
+        ],
+        "isVirtual" : false,
+        "enable": true
+    }
+]

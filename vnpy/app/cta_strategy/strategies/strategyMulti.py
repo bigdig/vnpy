@@ -147,7 +147,7 @@ class MultiStrategy(CtaTemplatePatch):
             s.inited = True
             s.on_init()
 
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_start(self):
@@ -161,7 +161,7 @@ class MultiStrategy(CtaTemplatePatch):
         for name, s in self.sortedStrategyItems:
             s.trading = True
             s.on_start()
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_stop(self):
@@ -174,7 +174,7 @@ class MultiStrategy(CtaTemplatePatch):
         for name, s in self.sortedStrategyItems:
             s.trading = False
             s.on_stop()
-        self.putEvent()
+        self.put_event()
         
     #----------------------------------------------------------------------
     def on_trade(self, trade):
@@ -186,7 +186,7 @@ class MultiStrategy(CtaTemplatePatch):
 
         for name, s in self.sortedStrategyItems:
             s.on_trade(trade)
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_order(self, order):
@@ -198,7 +198,7 @@ class MultiStrategy(CtaTemplatePatch):
 
         for name, s in self.sortedStrategyItems:
             s.on_order(order)
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_tick(self, tick):
@@ -252,7 +252,6 @@ class MultiStrategy(CtaTemplatePatch):
             self.write_log(u'策略实例重名：%s' %strategy_name)
         else:
             # 创建策略实例
-            print(strategy_name)
             strategy = strategyClass(self.cta_engine, strategy_name, self.vt_symbol, setting)
             # 将其它策略放个Engine 
             if not strategy.className  == self.className:

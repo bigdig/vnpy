@@ -110,7 +110,7 @@ class TurtleTradingStrategy(CtaTemplatePatch):
         # self.saveSyncData()
 
         # # 发出状态更新事件
-        # self.putEvent()
+        # self.put_event()
 
     #----------------------------------------------------------------------
     def on_trade(self, trade):
@@ -125,7 +125,7 @@ class TurtleTradingStrategy(CtaTemplatePatch):
             self.shortStop = self.shortEntry + self.atrVolatility * 2
 
         # 发出状态更新事件
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def sendBuyOrders(self, price):

@@ -722,7 +722,7 @@ class BacktestingEngine:
             if self.mode == BacktestingMode.BAR:
                 endPrice = self.bar.close_price
             else:
-                endPrice = self.tick.lastPrice
+                endPrice = self.tick.last_price
 
             for trade in longTrade:
                 result = TradingResult(trade.price, trade.datetime, endPrice,
@@ -1076,7 +1076,7 @@ class BacktestingEngine:
             plt.tight_layout()
             plt.xticks(xindex, tradeTimeIndex, rotation=0)  # 旋转15
 
-            plt.show()
+            # plt.show()
 
             names = []
             for key, items in groupby(
@@ -1331,7 +1331,7 @@ class BacktestingEngine:
                 order.status = Status.NOTTRADED
                 #self.strategy.on_order(order)
                 strategy = self.orderStrategyDict[order.vt_orderid]
-                strategy.onOrder(order)
+                strategy.on_order(order)
 
             # Check whether limit orders can be filled.
             long_cross = (
@@ -1351,8 +1351,8 @@ class BacktestingEngine:
 
             #增加多策略测试
             # 将成交推送到策略对象中
-            if trade.vt_orderid in self.orderStrategyDict:
-                strategy = self.orderStrategyDict[trade.vt_orderid]
+            if order.vt_orderid in self.orderStrategyDict:
+                strategy = self.orderStrategyDict[order.vt_orderid]
 
             # Push order udpate with status "all traded" (filled).
             order.traded = order.volume

@@ -71,9 +71,9 @@ class CtaTemplate_0(CtaTemplate):
     def lastPrice(self):
         """最新价格属性"""
         if self.lastTick:
-            return self.lastTick.lastPrice
+            return self.lastTick.last_price
         if self.lastBar:
-            return self.lastBar.close
+            return self.lastBar.close_price
 
         return 0
         pass

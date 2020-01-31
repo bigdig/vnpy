@@ -88,20 +88,20 @@ class CtaTemplate_6(CtaTemplate_5):
         if not self.am60.inited:
             print(u'%s策略加载60 Min Bar 初始数据不足  ' % self.strategy_name, self.initDays)
 
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_start(self):
         """启动策略（必须由用户继承实现）"""
         self.write_log(u'策略启动')
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_stop(self):
         """停止策略（必须由用户继承实现）"""
         self.cancel_all()
         self.write_log(u'停止')
-        self.putEvent()
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_tick(self, tick:TickData):

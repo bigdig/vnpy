@@ -1,0 +1,18 @@
+[
+
+    {
+        "strategy_name": "OPT_TripleMA_${vt_symbol}",
+        "className": "MultiStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "posMultiper":"${posMultiper}",
+        "kLineCycle":60,
+        "exitOnTopRtnPips": "${exitOnTopRtnPips}",
+        "halfTime":300,
+        "initDays": 40,
+        "settingFile":
+            [
+                "CTA_setting_TripleMa_OPT.json"
+            ],
+        "enable":true
+    }
+]
