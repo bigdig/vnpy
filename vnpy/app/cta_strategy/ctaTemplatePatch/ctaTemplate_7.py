@@ -35,10 +35,10 @@ class CtaTemplate_7(CtaTemplate_6):
         if name == self.name:
             return
 
-        if name in self.ctaEngine.strategyDict:
-            hedgeStratege = self.ctaEngine.strategyDict[name]
+        if name in self.cta_engine.strategyDict:
+            hedgeStratege = self.cta_engine.strategyDict[name]
         else:
-            self.writeCtaLog(u'策略 %s 没找到' % name)
+            self.write_log(u'策略 %s 没找到' % name)
 
         if hedgeStratege and callable(getattr(hedgeStratege, "proxyHedgeTrade", None)):
             # 方向

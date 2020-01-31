@@ -35,6 +35,27 @@ class CtaTemplate_0(CtaTemplate):
         """"""
         super().__init__(cta_engine, strategy_name, vt_symbol, setting)
 
+
+    def update_setting(self, setting: dict):
+        """
+        Update strategy parameter wtih value in setting dict.
+        """
+        # 设置策略的参数
+        for key in self.parameters:
+            if key in setting:
+                #d[key] = setting[key]
+                tp = type(getattr(self, key))
+                
+                #buf-fix settingFile may be string or list
+                if key != 'settingFile' and tp:
+
+                    if tp in [int,float,bool]:
+                        setattr(self, key, eval(str(setting[key])) )
+                    else:
+                        setattr(self, key, tp(setting[key]) )
+                else:
+                    setattr(self, key, setting[key])
+
     #----------------------------------------------------------------------
     def on_tick(self, tick):
         """收到行情推送"""

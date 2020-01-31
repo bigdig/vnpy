@@ -49,7 +49,7 @@ def timeit(method):
 
 #     #@timeit
 #     def decorator(self, *args, **kwargs):
-#         if self.ctaEngine.engineType == ENGINETYPE_TRADING:
+#         if self.cta_engine.engineType == ENGINETYPE_TRADING:
 #             return func1(self,*args, **kwargs)
 #         else:
 #             return func2(self,*args, **kwargs)

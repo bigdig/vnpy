@@ -21,13 +21,13 @@ class CtaTemplate_5(CtaTemplate_4):
         #取VPIN Strategy
         vpin, cdf, preCDF = 0, 0, 0
         strategyName = 'Z_VPIN_' + self.vt_symbol
-        if strategyName in self.ctaEngine.strategyDict:
-            strategy = self.ctaEngine.strategyDict[strategyName]
+        if strategyName in self.cta_engine.strategyDict:
+            strategy = self.cta_engine.strategyDict[strategyName]
             vpin, cdf, preCDF = strategy.getVPIN(VPINCircle,Special)
         else:
-            self.writeCtaLog(u'strategy %s Not Found' % strategyName)
+            self.write_log(u'strategy %s Not Found' % strategyName)
 
-        #self.writeCtaLog(u'%s %s %s %s' %(VPINCircle,vpin,cdf,preCDF))
+        #self.write_log(u'%s %s %s %s' %(VPINCircle,vpin,cdf,preCDF))
         return vpin, cdf, preCDF
 
     #----------------------------------------------------------------------
@@ -35,25 +35,25 @@ class CtaTemplate_5(CtaTemplate_4):
         """debug"""
         #取VPIN Strategy
         strategyName = 'Z_VPIN_' + self.vt_symbol
-        if strategyName in self.ctaEngine.strategyDict:
-            strategy = self.ctaEngine.strategyDict[strategyName]
+        if strategyName in self.cta_engine.strategyDict:
+            strategy = self.cta_engine.strategyDict[strategyName]
             info = u'%s 交易: PNL = %s  HoldTime = %s' % (
                 self.tradeIndex, self.pnl, self.holdTime)
             strategy.debug(info)
         else:
-            self.writeCtaLog(u'strategy %s Not Found' % strategyName)
+            self.write_log(u'strategy %s Not Found' % strategyName)
 
     #----------------------------------------------------------------------
     def getGARCHValue(self, GARCHCircle=60):
         """取 predicate standardMU sigma"""
         #取GARCH Strategy
         strategyName = 'Z_GARCH_' + self.vt_symbol + '_' + str(GARCHCircle)
-        if strategyName in self.ctaEngine.strategyDict:
-            strategy = self.ctaEngine.strategyDict[strategyName]
+        if strategyName in self.cta_engine.strategyDict:
+            strategy = self.cta_engine.strategyDict[strategyName]
             return strategy.getGARCH(GARCHCircle, self.vt_symbol,
                                      self.lastDatetime)
         else:
-            self.writeCtaLog(u'strategy %s Not Found' % strategyName)
+            self.write_log(u'strategy %s Not Found' % strategyName)
             return (False, 0, 0, 0)
 
     #----------------------------------------------------------------------
@@ -61,8 +61,8 @@ class CtaTemplate_5(CtaTemplate_4):
         """取 predicate standardMU sigma"""
         #取GARCH Strategy
         strategyName = 'Z_GARCH_' + self.vt_symbol + '_' + str(GARCHCircle)
-        if strategyName in self.ctaEngine.strategyDict:
-            strategy = self.ctaEngine.strategyDict[strategyName]
+        if strategyName in self.cta_engine.strategyDict:
+            strategy = self.cta_engine.strategyDict[strategyName]
             result, predicate, mu, sigma = strategy.getGARCH(
                 GARCHCircle, self.vt_symbol, self.lastDatetime)
             if result:
@@ -70,7 +70,7 @@ class CtaTemplate_5(CtaTemplate_4):
             else:
                 return 0.008
         else:
-            self.writeCtaLog(u'strategy %s Not Found' % strategyName)
+            self.write_log(u'strategy %s Not Found' % strategyName)
             return 0.008
 
     #----------------------------------------------------------------------
@@ -79,12 +79,12 @@ class CtaTemplate_5(CtaTemplate_4):
         #取VPIN Strategy
         trend = False
         strategyName = 'Z_EMDTrend_' + self.vt_symbol + '_' + str(Circle)
-        if strategyName in self.ctaEngine.strategyDict:
-            strategy = self.ctaEngine.strategyDict[strategyName]
+        if strategyName in self.cta_engine.strategyDict:
+            strategy = self.cta_engine.strategyDict[strategyName]
             trend = strategy.getEMDTrend(Circle, self.vt_symbol,
                                          self.lastDatetime)
         else:
-            self.writeCtaLog(u'strategy %s Not Found' % strategyName)
+            self.write_log(u'strategy %s Not Found' % strategyName)
 
         return trend
 
@@ -93,11 +93,11 @@ class CtaTemplate_5(CtaTemplate_4):
         """取CYQ"""
         #取VPIN Strategy
         strategyName = 'Z_CYQ_' + self.vt_symbol
-        if strategyName in self.ctaEngine.strategyDict:
-            strategy = self.ctaEngine.strategyDict[strategyName]
+        if strategyName in self.cta_engine.strategyDict:
+            strategy = self.cta_engine.strategyDict[strategyName]
             return strategy.getCYQ()
         else:
-            self.writeCtaLog(u'strategy %s Not Found' % strategyName)
+            self.write_log(u'strategy %s Not Found' % strategyName)
 
         return 0, 0, 0
 

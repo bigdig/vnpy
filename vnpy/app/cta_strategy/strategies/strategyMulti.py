@@ -118,11 +118,11 @@ class MultiStrategy(CtaTemplatePatch):
 
                 if self.get_engine_type() == EngineType.LIVE and setting["className"] != self.className:
                     # 处理实盘非组合策略
-                    self.ctaEngine.loadStrategy(setting)
+                    self.cta_engine.loadStrategy(setting)
                 else:
                     self.loadStrategy(setting)
                     #排序，与实盘一致
-                    self.sortedStrategyItems = sorted(self.ctaEngine.strategyDict.items(), key = lambda item:item[0],reverse = True)
+                    self.sortedStrategyItems = sorted(self.cta_engine.strategyDict.items(), key = lambda item:item[0],reverse = True)
 
         # load trading dict
         self.persistent = {} # 不存储
@@ -142,7 +142,7 @@ class MultiStrategy(CtaTemplatePatch):
         if self.get_engine_type() == EngineType.LIVE:
             return
 
-        self.writeCtaLog(u'策略实例统计数量：%s' % len(self.sortedStrategyItems)) 
+        self.write_log(u'策略实例统计数量：%s' % len(self.sortedStrategyItems)) 
         for name, s in self.sortedStrategyItems:
             s.inited = True
             s.on_init()
@@ -235,7 +235,7 @@ class MultiStrategy(CtaTemplatePatch):
             className = setting['className']
             enable = setting['enable']
             if not enable:
-                self.writeCtaLog(u'策略类：%s not enabled' %className)
+                self.write_log(u'策略类：%s not enabled' %className)
                 return
         except Exception as e:
             print(u'载入策略出错：%s' %e)
@@ -244,17 +244,17 @@ class MultiStrategy(CtaTemplatePatch):
         # 获取策略类
         strategyClass = STRATEGY_CLASS.get(className, None)
         if not strategyClass:
-            self.writeCtaLog(u'找不到策略类：%s' %className)
+            self.write_log(u'找不到策略类：%s' %className)
             return
         
         # 防止策略重名
-        if strategy_name in self.ctaEngine.strategyDict:
-            self.writeCtaLog(u'策略实例重名：%s' %strategy_name)
+        if strategy_name in self.cta_engine.strategyDict:
+            self.write_log(u'策略实例重名：%s' %strategy_name)
         else:
             # 创建策略实例
             print(strategy_name)
-            strategy = strategyClass(self.ctaEngine, strategy_name, self.vt_symbol, setting)
+            strategy = strategyClass(self.cta_engine, strategy_name, self.vt_symbol, setting)
             # 将其它策略放个Engine 
             if not strategy.className  == self.className:
                 #同步到ctaEngine中
-                self.ctaEngine.strategyDict[strategy_name] = strategy
+                self.cta_engine.strategyDict[strategy_name] = strategy

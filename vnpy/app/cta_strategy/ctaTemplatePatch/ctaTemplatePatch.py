@@ -62,7 +62,7 @@ class CtaTemplatePatch(CtaTemplate_6):
         """
         # 检查之前委托都已结束
         if self.uncompletedOrders:
-            self.writeCtaLog(
+            self.write_log(
                 u'委托单没有完全结束，不执行新定单 %s' % str(self.uncompletedOrders))
             return
 

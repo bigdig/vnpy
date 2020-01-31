@@ -71,7 +71,7 @@ class CtaTemplate_6(CtaTemplate_5):
     # @timeit
     def on_init(self):
         """初始化策略（必须由用户继承实现）"""
-        self.writeCtaLog(u'策略初始化')
+        self.write_log(u'策略初始化')
 
         # 载入历史数据，并采用回放计算的方式初始化策略数值
         self.load_bar(self.initDays)
@@ -79,7 +79,7 @@ class CtaTemplate_6(CtaTemplate_5):
         if hasattr(self,'signal'):
             if hasattr(self.signal, 'am'):
                 if not self.signal.am.inited:
-                    self.writeCtaLog(u'%s策略信号加载初始数据不足' % self.strategy_name)
+                    self.write_log(u'%s策略信号加载初始数据不足' % self.strategy_name)
                     print(u'%s策略信号加载初始数据不足 ' % self.strategy_name, self.initDays)
 
         if not self.am.inited:

@@ -86,7 +86,7 @@ class CtaTemplate_4(CtaTemplate_3):
         #实盘模式
         #if self.getEngineType() == ENGINETYPE_TRADING:
         # content = tradeDictToJSON(trade)
-        # self.writeCtaLog(u'%s 交易: %s' % (self.tradeIndex, content))
+        # self.write_log(u'%s 交易: %s' % (self.tradeIndex, content))
 
         #清除对冲部分market value
         hedge = trade.volume - abs(self.pos)
