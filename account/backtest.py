@@ -15,6 +15,7 @@ from setup_logger import setup_logger
 setup_logger(filename='logsBackTest/vnpy_{0}.log'.format(datetime.now().strftime('%m%d_%H%M')), debug=False)
 
 from vnpy.app.cta_strategy.backtesting import BacktestingEngine, OptimizationSetting
+from vnpy.app.cta_strategy.backtestingPatch import BacktestingEnginePatch
 from datetime import datetime,date,timedelta
 import time
 import json
@@ -27,7 +28,7 @@ backtesting
 def backtesting(settingFile, kLineCycle = 30, vt_symbol = 'rb1801', vt_symbol2 = None, mode = 'B', startDate = None, days = 1, historyDays = 0, optimization = False):
 
     # 创建回测引擎
-    engine = BacktestingEngine()
+    engine = BacktestingEnginePatch()
     
     # 设置回测用的数据起始日期
     if startDate:
