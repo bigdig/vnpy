@@ -103,8 +103,7 @@ def backtesting(settingFile, kLineCycle = 30, vt_symbol = 'rb1801', vt_symbol2 =
         #engine.loadHistoryData()
 
         orders = pd.DataFrame([i.__dict__ for i in resultList['resultList']])
-        pricing = pd.DataFrame(list(engine.history_data))
-        print(pricing.symbol)
+        pricing = pd.DataFrame([i.__dict__ for i in engine.history_data])
 
         #VPIN analysis
         # from .VPINAnalysis import VPINAnalysis

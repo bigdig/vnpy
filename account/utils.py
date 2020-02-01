@@ -110,7 +110,7 @@ def plot_candles1(df, *args, **kwargs):
     # pg.dbg()
     # p1.setAutoVisible(y=True)
 
-    brushes = (df.close - df.open).apply(lambda x: 'r' if x >= 0 else 'g')
+    brushes = (df.close_price - df.open_price).apply(lambda x: 'r' if x >= 0 else 'g')
 
     scale = 1
     length = len(df.index)
@@ -118,8 +118,8 @@ def plot_candles1(df, *args, **kwargs):
     width1 = scale * 0.8
     width2 = scale * 0.01
 
-    bg = pg.BarGraphItem(x=x1, y0=df.open, y1=df.close, width=width1, brushes=brushes)
-    bg1 = pg.BarGraphItem(x=x1, y0=df.low, y1=df.high, width=width2, brushes=brushes)
+    bg = pg.BarGraphItem(x=x1, y0=df.open_price, y1=df.close_price, width=width1, brushes=brushes)
+    bg1 = pg.BarGraphItem(x=x1, y0=df.low_price, y1=df.high_price, width=width2, brushes=brushes)
     p1.addItem(bg)
     p1.addItem(bg1)
 
@@ -154,7 +154,7 @@ def plot_candles1(df, *args, **kwargs):
                 symbol='x'
                 )
 
-    main_low = df.low.min()
+    main_low = df.low_price.min()
     if len(technicals) != 0:
         for key,tech in technicals.items():
             tech = np.nan_to_num(tech)
@@ -171,8 +171,8 @@ def plot_candles1(df, *args, **kwargs):
     vol = pg.BarGraphItem(x=x1, width=width1, height=df.volume, brushes=brushes)
     p3.addItem(vol)
 
-    bg3 = pg.BarGraphItem(x=x1, y0=df.open, y1=df.close, width=width1, brushes=brushes)
-    bg4 = pg.BarGraphItem(x=x1, y0=df.low, y1=df.high, width=width2, brushes=brushes)
+    bg3 = pg.BarGraphItem(x=x1, y0=df.open_price, y1=df.close_price, width=width1, brushes=brushes)
+    bg4 = pg.BarGraphItem(x=x1, y0=df.low_price, y1=df.high_price, width=width2, brushes=brushes)
     p2.addItem(bg3)
     p2.addItem(bg4)
 
@@ -194,7 +194,7 @@ def plot_candles1(df, *args, **kwargs):
         tmp = df[iminX:imaxX]
 
         p1.setXRange(minX, maxX, padding=0)
-        p1.setYRange(tmp.low.min(), tmp.high.max(), padding=0)
+        p1.setYRange(tmp.low_price.min(), tmp.high_price.max(), padding=0)
         p3.setYRange(0, tmp.volume.max(), padding=0)
 
     region.sigRegionChanged.connect(update)
@@ -224,8 +224,8 @@ def plot_candles1(df, *args, **kwargs):
                 label.setText(
                     "<span style='color: red'>date=%s, <span style='color: red'>time=%s</span>\
                     <span style='color: red'>open=%0.1f, <span style='color: red'>high=%0.1f</span>, <span style='color: red'>low=%0.1f</span>,  <span style='color: red'>close=%0.1f</span>,   <span style='color: red'>volume=%0.1f</span>" % (
-                        df.iloc[index].date,df.iloc[index].time,
-                        df.iloc[index].open, df.iloc[index].high, df.iloc[index].low, df.iloc[index].close,
+                        df.iloc[index].datetime,df.iloc[index].datetime,
+                        df.iloc[index].open_price, df.iloc[index].high_price, df.iloc[index].low_price, df.iloc[index].close_price,
                         df.iloc[index].volume))
             vLine.setPos(mousePoint.x())
             hLine.setPos(mousePoint.y())
