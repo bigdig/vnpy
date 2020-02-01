@@ -6,7 +6,6 @@ CtaSignalPatch
 '''
 
 from vnpy.app.cta_strategy import CtaSignal
-from vnpy.app.cta_strategy.ctaTemplatePatch import SharedArrayManager
 
 ########################################################################
 class CtaSignalPatch(CtaSignal):
@@ -42,8 +41,3 @@ class CtaSignalPatch(CtaSignal):
         """记录CTA日志"""
         if self.strategy:
              self.strategy.writeCtaLog(content)
-
-    #----------------------------------------------------------------------
-    def getArrayManager(self, size=100):
-        """取共享ArrayManager"""
-        return SharedArrayManager.getSharedArrayManager(self.strategy.vt_symbol,self.strategy.kLineCycle,self.strategy.KLineSeconds,size)

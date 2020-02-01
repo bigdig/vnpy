@@ -59,13 +59,14 @@ class CtaTemplate_6(CtaTemplate_5):
 
         self.bm.xsec = self.KLineSeconds  #按指定X秒生成K线
 
-        #self.am = ArrayManager(size=self.arraySize)
-        self.am = getSharedArrayManager(self.vt_symbol, self.kLineCycle,
-                                        self.KLineSeconds, self.arraySize)
+        self.am = ArrayManager(size=self.arraySize)
+        # self.am = getSharedArrayManager(self.vt_symbol, self.kLineCycle,
+        #                                 self.KLineSeconds, self.arraySize)
 
         self.bm60 = BarGenerator(self.on_bar,60,self.on60MinBar)
-        self.am60 = getSharedArrayManager(self.vt_symbol, 60,
-                                        self.KLineSeconds, 100)
+        self.am60 = ArrayManager(size=100)
+        # self.am60 = getSharedArrayManager(self.vt_symbol, 60,
+        #                                 self.KLineSeconds, 100)
 
     #----------------------------------------------------------------------
     # @timeit

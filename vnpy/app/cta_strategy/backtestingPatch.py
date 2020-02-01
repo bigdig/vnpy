@@ -712,7 +712,6 @@ class BacktestingEnginePatch(BacktestingEngine):
                 gateway_name=self.gateway_name,
             )
             trade.datetime = self.datetime
-            
             #add trade strategy name, 以便于区别多策略混合效果
             trade.name = strategy.strategy_name
 
@@ -737,6 +736,9 @@ class BacktestingEnginePatch(BacktestingEngine):
             short_best_price = short_cross_price
 
         for stop_order in list(self.active_stop_orders.values()):
+
+            strategy = self.orderStrategyDict[stop_order.stop_orderid]
+
             # Check whether stop order can be triggered.
             long_cross = (
                 stop_order.direction == Direction.LONG
@@ -793,7 +795,6 @@ class BacktestingEnginePatch(BacktestingEngine):
             )
             trade.datetime = self.datetime
 
-            strategy = self.orderStrategyDict[stop_order.stop_orderid]
             #add trade strategy name, 以便于区别多策略混合效果
             trade.name = strategy.strategy_name
 
@@ -827,6 +828,12 @@ class BacktestingEnginePatch(BacktestingEngine):
         vt_orderid  = super().send_order(strategy,direction,offset,price,volume,stop,lock)
         for o in vt_orderid:
             self.orderStrategyDict[o] = strategy  # 保存vtOrderID和策略的映射关系
+
+            # 本地停止单发单时，回调
+            if stop:
+                stop_order = self.active_stop_orders[o]
+                strategy.on_stop_order(stop_order)
+
         return vt_orderid
 
     def cancel_order(self, strategy: CtaTemplate, vt_orderid: str):
@@ -836,7 +843,33 @@ class BacktestingEnginePatch(BacktestingEngine):
         super().cancel_order(strategy,vt_orderid)
         self.orderStrategyDict.pop(vt_orderid,None)
 
+    def cancel_stop_order(self, strategy: CtaTemplate, vt_orderid: str):
+        """"""
+        if vt_orderid not in self.active_stop_orders:
+            return
+        
+        # 只处理对应策略的单子
+        if strategy != self.orderStrategyDict[vt_orderid]:
+            return
 
+        stop_order = self.active_stop_orders.pop(vt_orderid)
+
+        stop_order.status = StopOrderStatus.CANCELLED
+        strategy.on_stop_order(stop_order)
+
+    def cancel_limit_order(self, strategy: CtaTemplate, vt_orderid: str):
+        """"""
+        if vt_orderid not in self.active_limit_orders:
+            return
+
+        # 只处理对应策略的单子
+        if strategy != self.orderStrategyDict[vt_orderid]:
+            return
+
+        order = self.active_limit_orders.pop(vt_orderid)
+
+        order.status = Status.CANCELLED
+        strategy.on_order(order)
 ########################################################################
 class TradingResult(object):
     """每笔交易的结果"""

@@ -43,18 +43,6 @@ class CtaTemplatePatch(CtaTemplate_6):
             self.reissue_order(-self.pos,self.tickAdd)
             self.tradeIndex += 1  #平仓后，交易编号加一
 
-    #----------------------------------------------------------------------
-    def on_trade(self, trade):
-        """收到交易信息"""
-        super(CtaTemplatePatch, self).on_trade(trade)
-
-        if self.debugMode:
-            #save trade
-            if self.get_engine_type() == EngineType.BACKTESTING:
-                trade.name = self.strategy_name  # 添加策略名TAG
-                trade.datetime = str(self.lastDatetime)
-                trade.dt = self.lastDatetime
-
     #-----------------------------------------------------------------
     def trade(self, posChange, posChange1=0):
         """

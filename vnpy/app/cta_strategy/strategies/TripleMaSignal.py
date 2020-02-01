@@ -33,7 +33,7 @@ class TripleMaCrossSignal(CtaSignalPatch):
         super(TripleMaCrossSignal, self).__init__(strategy)
 
         self.bg = BarGenerator(self.onBar,KCircle,self.onXminBar)
-        self.am = self.getArrayManager(size=100)
+        self.am = ArrayManager(size=100)
 
     #----------------------------------------------------------------------
     def onBar(self, bar):
@@ -107,7 +107,7 @@ class TripleMaSignal(CtaSignalPatch):
         super(TripleMaSignal, self).__init__(strategy)
 
         self.bg = BarGenerator(self.onBar,KCircle,self.onXminBar)
-        self.am = self.getArrayManager(size=100)
+        self.am = ArrayManager(size=100)
 
     #----------------------------------------------------------------------
     def onBar(self, bar):
