@@ -72,5 +72,5 @@ class CtaTemplate_2(CtaTemplate_1):
                         for order in list(self.stopOrderDictory.values()):
                             self.cancel_order(order.stop_orderid)
 
-        return super(CtaTemplate_2, self).send_order(direction, offset, price,
+        return super().send_order(direction, offset, price,
                                                        volume, stop, lock)

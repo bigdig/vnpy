@@ -657,11 +657,13 @@ class BacktestingEnginePatch(BacktestingEngine):
             short_best_price = short_cross_price
 
         for order in list(self.active_limit_orders.values()):
+
+            #增加多策略测试
+            strategy = self.orderStrategyDict[order.vt_orderid]
+
             # Push order update with status "not traded" (pending).
             if order.status == Status.SUBMITTING:
                 order.status = Status.NOTTRADED
-                #self.strategy.on_order(order)
-                strategy = self.orderStrategyDict[order.vt_orderid]
                 strategy.on_order(order)
 
             # Check whether limit orders can be filled.
@@ -679,11 +681,6 @@ class BacktestingEnginePatch(BacktestingEngine):
 
             if not long_cross and not short_cross:
                 continue
-
-            #增加多策略测试
-            # 将成交推送到策略对象中
-            if order.vt_orderid in self.orderStrategyDict:
-                strategy = self.orderStrategyDict[order.vt_orderid]
 
             # Push order udpate with status "all traded" (filled).
             order.traded = order.volume
@@ -715,6 +712,7 @@ class BacktestingEnginePatch(BacktestingEngine):
                 gateway_name=self.gateway_name,
             )
             trade.datetime = self.datetime
+            
             #add trade strategy name, 以便于区别多策略混合效果
             trade.name = strategy.strategy_name
 
@@ -826,14 +824,18 @@ class BacktestingEnginePatch(BacktestingEngine):
         lock: bool
     ):
         """"""
-        price = round_to(price, self.pricetick)
-        if stop:
-            vt_orderid = self.send_stop_order(direction, offset, price, volume)
-        else:
-            vt_orderid = self.send_limit_order(direction, offset, price, volume)
+        vt_orderid  = super().send_order(strategy,direction,offset,price,volume,stop,lock)
+        for o in vt_orderid:
+            self.orderStrategyDict[o] = strategy  # 保存vtOrderID和策略的映射关系
+        return vt_orderid
 
-        self.orderStrategyDict[vt_orderid] = strategy  # 保存vtOrderID和策略的映射关系
-        return [vt_orderid]
+    def cancel_order(self, strategy: CtaTemplate, vt_orderid: str):
+        """
+        Cancel order by vt_orderid.
+        """
+        super().cancel_order(strategy,vt_orderid)
+        self.orderStrategyDict.pop(vt_orderid,None)
+
 
 ########################################################################
 class TradingResult(object):
@@ -860,4 +862,10 @@ class TradingResult(object):
         self.pnlPct = self.pnl / self.entryPrice  # 百分比净盈亏
 
         self.name = name
+
+#----------------------------------------------------------------------
+def formatNumber(n):
+    """格式化数字到字符串"""
+    rn = round(n, 2)  # 保留两位小数
+    return format(rn, ',')  # 加上千分符
 

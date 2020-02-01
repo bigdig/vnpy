@@ -110,9 +110,7 @@ class MultiStrategy(CtaTemplatePatch):
                     exitOnTopRtnPips = self.exitOnTopRtnPips,
                     isVirtual = self.isVirtual,
                     halfTime = self.halfTime)
-                print("xxxxxxxxx")
-                print(settingFile)
-                print(self.kLineCycle)
+
                 setting = ExpandJsonTemplate(setting,extra)
                 print(setting)
 
@@ -123,16 +121,6 @@ class MultiStrategy(CtaTemplatePatch):
                     self.loadStrategy(setting)
                     #排序，与实盘一致
                     self.sortedStrategyItems = sorted(self.cta_engine.strategyDict.items(), key = lambda item:item[0],reverse = True)
-
-        # load trading dict
-        self.persistent = {} # 不存储
-        for name, s in self.sortedStrategyItems:
-            # 如果有交易记录
-            if hasattr(s, "persistent"):
-                if hasattr(s.persistent,'load'):
-                    s.persistent.load()
-                    for key in s.persistent:
-                        self.persistent[key] = s.persistent[key]
 
     #----------------------------------------------------------------------
     # @timeit
@@ -176,30 +164,6 @@ class MultiStrategy(CtaTemplatePatch):
             s.on_stop()
         self.put_event()
         
-    #----------------------------------------------------------------------
-    def on_trade(self, trade):
-        """停止策略（必须由用户继承实现）"""
-        super(MultiStrategy, self).on_trade(trade)
-
-        if self.get_engine_type() == EngineType.LIVE:
-            return
-
-        for name, s in self.sortedStrategyItems:
-            s.on_trade(trade)
-        self.put_event()
-
-    #----------------------------------------------------------------------
-    def on_order(self, order):
-        """停止策略（必须由用户继承实现）"""
-        super(MultiStrategy, self).on_order(order)
-
-        if self.get_engine_type() == EngineType.LIVE:
-            return
-
-        for name, s in self.sortedStrategyItems:
-            s.on_order(order)
-        self.put_event()
-
     #----------------------------------------------------------------------
     def on_tick(self, tick):
         """收到行情TICK推送（必须由用户继承实现）"""

@@ -1,6 +1,6 @@
 [
     {
-        "strategy_name": "TurtleTradingStrategy_${vt_symbol}_${kLineCycle}_${isVirtual}",
+        "strategy_name": "TurtleTradingStrategy_${vt_symbol}_${kLineCycle}",
         "className": "TurtleTradingStrategy",
         "vt_symbol": "${vt_symbol}",
         "kLineCycle": "${kLineCycle}",
