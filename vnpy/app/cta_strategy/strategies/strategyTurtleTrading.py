@@ -60,9 +60,9 @@ class TurtleTradingStrategy(CtaTemplatePatch):
         # 策略时方便（更多是个编程习惯的选择）
 
     #----------------------------------------------------------------------
-    def on_bar(self, bar):
+    def onXminBar(self, bar):
         """收到Bar推送（必须由用户继承实现）"""
-        super(TurtleTradingStrategy, self).on_bar(bar)
+        super().onXminBar(bar)
 
         if not self.trading:
             return

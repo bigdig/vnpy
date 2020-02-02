@@ -1,0 +1,17 @@
+[
+    {
+        "strategy_name": "OPT_KTrendStrategy_${vt_symbol}",
+        "className": "MultiStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "posMultiper": "${posMultiper}",
+        "kLineCycle": 60,
+        "exitOnTopRtnPips": 0.01,
+        "halfTime": 600,
+        "initDays": 40,
+        "settingFile": [
+            "CTA_setting_KTrend_OPT.json"
+        ],
+        "isVirtual" : "${isVirtual}",
+        "enable": true
+    }
+]

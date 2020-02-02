@@ -1,0 +1,23 @@
+[
+    {
+        "strategy_name": "KTrendStrategy_${vt_symbol}_${kLineCycle}",
+        "className": "KTrendStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "kLineCycle": "${kLineCycle}",
+        "initDays": 40,
+        "fixedSize": 1,
+        "posMultiper": "${posMultiper}",
+        "isVirtual" : "${isVirtual}",
+        "enable": true
+    },
+    {
+        "strategy_name": "KTrendStrategy_${vt_symbol}_${kLineCycle}_Cover_TrailingStop",
+        "className": "TrailingStopStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "exitOnTopRtnPips": "${exitOnTopRtnPips}",
+        "halfTime": "${halfTime}",
+        "initDays": 40,
+        "kLineCycle": 5,
+        "enable": true
+    }
+]

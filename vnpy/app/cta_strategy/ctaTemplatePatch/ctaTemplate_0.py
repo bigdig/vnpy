@@ -14,6 +14,7 @@ from vnpy.app.cta_strategy import (
     BarGenerator,
     ArrayManager,
 )
+from datetime import datetime
 
 ########################################################################
 class CtaTemplate_0(CtaTemplate):
