@@ -59,18 +59,22 @@ class CtaTemplate_2(CtaTemplate_1):
                     # long stop order
                     if direction == Direction.LONG:
                         for order in self.stopOrderDictory.values():
-                            if price >= order.price:
-                                return []
+                            if order.direction == direction:
+                                if price >= order.price:
+                                    return []
                         # 去除旧的单子
                         for order in list(self.stopOrderDictory.values()):
-                            self.cancel_order(order.stop_orderid)
+                            if order.direction == direction:
+                                self.cancel_order(order.stop_orderid)
                     else:
                         for order in self.stopOrderDictory.values():
-                            if price <= order.price:
-                                return []
+                            if order.direction == direction:
+                                if price <= order.price:
+                                    return []
                         # 去除旧的单子
                         for order in list(self.stopOrderDictory.values()):
-                            self.cancel_order(order.stop_orderid)
+                            if order.direction == direction:
+                                self.cancel_order(order.stop_orderid)
 
         return super().send_order(direction, offset, price,
                                                        volume, stop, lock)

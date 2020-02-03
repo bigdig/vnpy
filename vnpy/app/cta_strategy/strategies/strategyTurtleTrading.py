@@ -60,11 +60,13 @@ class TurtleTradingStrategy(CtaTemplatePatch):
         # 策略时方便（更多是个编程习惯的选择）
 
     #----------------------------------------------------------------------
-    def onXminBar(self, bar):
+    def on_bar(self, bar : BarData):
         """收到Bar推送（必须由用户继承实现）"""
-        super().onXminBar(bar)
+        super(TurtleTradingStrategy, self).on_bar(bar)
 
         if not self.trading:
+            return
+        if not self.am.inited:
             return
 
         self.cancel_all()
@@ -109,8 +111,8 @@ class TurtleTradingStrategy(CtaTemplatePatch):
         # # 同步数据到数据库
         # self.saveSyncData()
 
-        # # 发出状态更新事件
-        # self.put_event()
+        # 发出状态更新事件
+        self.put_event()
 
     #----------------------------------------------------------------------
     def on_trade(self, trade):
@@ -134,15 +136,19 @@ class TurtleTradingStrategy(CtaTemplatePatch):
 
         if t < 1:
             self.buy(price, self.fixedSize, True)
+            return
 
         if t < 2:
             self.buy(price + self.atrVolatility * 0.5, self.fixedSize, True)
+            return
 
         if t < 3:
             self.buy(price + self.atrVolatility, self.fixedSize, True)
+            return
 
         if t < 4:
             self.buy(price + self.atrVolatility * 1.5, self.fixedSize, True)
+            return
 
     #----------------------------------------------------------------------
     def sendShortOrders(self, price):
@@ -151,12 +157,16 @@ class TurtleTradingStrategy(CtaTemplatePatch):
 
         if t > -1:
             self.short(price, self.fixedSize, True)
+            return
 
         if t > -2:
             self.short(price - self.atrVolatility * 0.5, self.fixedSize, True)
+            return
 
         if t > -3:
             self.short(price - self.atrVolatility, self.fixedSize, True)
+            return
 
         if t > -4:
             self.short(price - self.atrVolatility * 1.5, self.fixedSize, True)
+            return

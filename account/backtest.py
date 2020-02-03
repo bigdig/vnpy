@@ -192,4 +192,5 @@ def main(argv):
 if __name__ == "__main__":
     main(sys.argv[1:])
     #main("-d 1 -s rb1905 -hd 0 -sf CTA_setting_Spread.json -s2 rb1910 -m T".split())
+    #main('-d 240 -s rb000.SHFE -sf CTA_setting_alpha_real_rb.json'.split())
 
