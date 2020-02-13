@@ -24,9 +24,10 @@ class CtaTemplate_0(CtaTemplate):
     #基本变量
     lastTick = None         # 最新tick数据
     lastBar = None          # 最新bar数据
+    vt_symbol = ""
 
     # 参数列表，保存了参数的名称
-    parameters = CtaTemplate.parameters + []
+    parameters = CtaTemplate.parameters + ['vt_symbol']
 
     # 变量列表，保存了变量的名称
     varList = CtaTemplate.variables + ['lastPrice']

@@ -16,6 +16,7 @@ from vnpy.trader.database import database_manager
 from vnpy.app.cta_strategy import (
     CtaTemplate,
     BacktestingEngine,
+    BacktestingEnginePatch,
     OptimizationSetting
 )
 
@@ -50,7 +51,7 @@ class BacktesterEngine(BaseEngine):
         """"""
         self.write_log("初始化CTA回测引擎")
 
-        self.backtesting_engine = BacktestingEngine()
+        self.backtesting_engine = BacktestingEnginePatch()
         # Redirect log from backtesting engine outside.
         self.backtesting_engine.output = self.write_log
 

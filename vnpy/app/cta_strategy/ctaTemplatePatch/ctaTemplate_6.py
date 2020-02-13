@@ -36,7 +36,6 @@ class CtaTemplate_6(CtaTemplate_5):
                 [
                  'className',
                  'author',
-                 'vt_symbol',
                  'kLineCycle',
                  'initDays',
                  'debugMode',

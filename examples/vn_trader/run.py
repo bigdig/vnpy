@@ -1,4 +1,7 @@
 # flake8: noqa
+import sys
+sys.path.append('/Users/renxg/vnpy/vnpy_v2/vnpy/')
+
 from vnpy.event import EventEngine
 
 from vnpy.trader.engine import MainEngine

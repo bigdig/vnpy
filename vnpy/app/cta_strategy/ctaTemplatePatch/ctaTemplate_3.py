@@ -24,7 +24,7 @@ class CtaTemplate_3(CtaTemplate_2):
     author = u'rxg'
 
     # 基本变量
-    _fixedSize = 1  # 每次交易的数量
+    fixedSize = 1  # 每次交易的数量
     posMultiper = 1  # 仓位倍率
     _pos = 0  #仓位信息
 
@@ -42,17 +42,10 @@ class CtaTemplate_3(CtaTemplate_2):
                 ]
 
     #----------------------------------------------------------------------
-    @property
-    def fixedSize(self):
-        """最新价格属性"""
-        return abs(int(self._fixedSize * float(self.posMultiper)))
-
-    #----------------------------------------------------------------------
-    @fixedSize.setter
-    def fixedSize(self, value):
-        """最新价格属性"""
-        self._fixedSize = value
-        pass
+    def __init__(self, cta_engine, strategy_name, vt_symbol, setting):
+        """"""
+        super().__init__(cta_engine, strategy_name, vt_symbol, setting)
+        self.fixedSize = self.fixedSize * float(self.posMultiper)
 
     #----------------------------------------------------------------------
     @property
