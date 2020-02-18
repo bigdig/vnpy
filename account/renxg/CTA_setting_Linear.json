@@ -1,0 +1,17 @@
+[
+    {
+        "strategy_name": "OPT_LinearStrategy_${vt_symbol}",
+        "className": "MultiStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "posMultiper": "${posMultiper}",
+        "kLineCycle": 20,
+        "exitOnTopRtnPips": 0.008,
+        "halfTime": 60,
+        "initDays": 40,
+        "cancelSeconds": 60,
+        "settingFile": [
+            "CTA_setting_Linear_OPT.json"
+        ],
+        "enable": true
+    }
+]

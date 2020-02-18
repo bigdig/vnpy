@@ -1,0 +1,15 @@
+[
+    {
+        "strategy_name": "LinearStrategy_${vt_symbol}_${kLineCycle}",
+        "className": "LinearStrategy",
+        "vt_symbol": "${vt_symbol}",
+        "kLineCycle": "${kLineCycle}",
+        "regPeriod": 60,
+        "residualSmaPeriod": 12,
+        "residualLmaPeriod":36,
+        "initDays": 40,
+        "fixedSize": 1,
+        "posMultiper": "${posMultiper}",
+        "enable": true
+    }
+]

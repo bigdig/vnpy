@@ -25,12 +25,25 @@ class TripleMAStrategy(CtaTemplatePatch):
     className = 'TripleMAStrategy'
     author = 'renxg'
 
+    parameters = CtaTemplatePatch.parameters + [
+        'maWindow1', 'maWindow2', 'maWindow3'
+    ]
+
+    # 三均线长度设置
+    maWindow1 = 10
+    maWindow2 = 30
+    maWindow3 = 90
+
     # ----------------------------------------------------------------------
     def __init__(self, cta_engine, strategy_name, vt_symbol, setting):
         """"""
         super().__init__(cta_engine, strategy_name, vt_symbol, setting)
         # 跳期交易
         self.signal = TripleMaSignal(self,self.kLineCycle//2)  # 30分钟
+        self.signal.maWindow1 = self.maWindow1
+        self.signal.maWindow2 = self.maWindow2
+        self.signal.maWindow3 = self.maWindow3
+
         self.stopOrderList = []
 
     #----------------------------------------------------------------------

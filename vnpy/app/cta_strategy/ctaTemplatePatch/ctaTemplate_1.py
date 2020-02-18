@@ -170,7 +170,7 @@ class CtaTemplate_1(CtaTemplate_0):
         """补单交易"""
         if self.tickAdd == tickAdd:
             info[0] += 1
-            print("reissue delay order: index ",info[0] ,self.lastDatetime)
+            # print("reissue delay order: index ",info[0] ,self.lastDatetime)
 
         # 确定委托基准价格，有tick数据时优先使用，否则使用bar
         longPrice = 0
